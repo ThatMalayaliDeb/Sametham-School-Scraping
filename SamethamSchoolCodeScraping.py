@@ -478,22 +478,24 @@ if __name__ == "__main__":
         
         final_output_df = final_output_df.reindex(columns=all_cols)
         
-        # --- SAVE DIALOG (Custom Directory Selection) ---
-        input_filename = os.path.splitext(os.path.basename(file_path))[0]
-        default_output_name = f'{input_filename}_Scraped_Output.xlsx'
+        # --- SAVE DIALOG (UPDATED) ---
+        default_output_name = 'Output.xlsx' # Fixed default name
         
         print("💾 Please choose where to save the file...", flush=True)
+        # Note: Native Save As dialog handles the "Replace?" confirmation automatically.
+        # To "Keep Both", user selects "No" on the warning and renames the file manually.
         save_path = filedialog.asksaveasfilename(
             title="Save Output File",
             defaultextension=".xlsx",
             filetypes=[("Excel Files", "*.xlsx")],
-            initialfile=default_output_name
+            initialfile=default_output_name,
+            confirmoverwrite=True # Explicitly enable the overwrite confirmation
         )
         
         if save_path:
             OUTPUT_FILENAME = save_path
         else:
-            print("⚠️ Save cancelled. Saving to default location to prevent data loss...", flush=True)
+            print("⚠️ Save cancelled. Saving to default 'Output.xlsx' in current folder to prevent data loss...", flush=True)
             OUTPUT_FILENAME = default_output_name
         
         final_output_df.to_excel(OUTPUT_FILENAME, index=False, engine='openpyxl')
